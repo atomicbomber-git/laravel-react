@@ -12,3 +12,8 @@
 */
 
 Auth::routes();
+
+Route::prefix("/user")->group(function() {
+    Route::get("/{user}/timeline", "UserController@timeline")->name("user.timeline");
+    Route::get("/{user}/feed", "UserController@feed")->name("user.feed");
+});
