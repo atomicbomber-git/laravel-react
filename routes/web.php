@@ -11,29 +11,4 @@
 |
 */
 
-use Faker\Factory;
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get("/api/{amount}", function($amount) {
-    $faker = Factory::create();
-
-    $items = [];
-    for ($i=0; $i < $amount; $i++) { 
-        $items[] = [
-            "key" => $i,
-            "name" => $faker->name
-        ];
-    }
-    
-    return $items;
-
-})->name("api");
-
-Route::view("/test", "test");
-
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
