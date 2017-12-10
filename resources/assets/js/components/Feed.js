@@ -28,7 +28,13 @@ export default class Feed extends Component {
         return (
             <div>
                 {this.state.items.map((item) => {
-                    return <Post key={item.key}> {item.name} </Post>;
+                    return <Post
+                        key={item.id}
+                        title={item.title}
+                        poster={item.poster}
+                        time={item.time}
+                        content={item.content}
+                        />;
                 })}
             </div>
         );

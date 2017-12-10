@@ -9,7 +9,13 @@ export default class Post extends Component {
     render() {
         return (
             <div className="box">
-               <p> { this.props.children } </p>
+               <h3 className="title is-4"> {this.props.title} </h3>
+               <p>
+                   <small>
+                       Posted at <strong> {this.props.time} </strong> by <strong> {this.props.poster} </strong>
+                   </small>
+               </p>
+               <p> {this.props.content} </p>
             </div>
         );
     }
