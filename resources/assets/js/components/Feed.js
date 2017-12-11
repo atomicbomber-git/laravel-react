@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import FlipMove from 'react-flip-move';
 
 import Post from './Post';
 
@@ -9,25 +10,17 @@ const dataUrl = window.dataUrl;
 export default class Feed extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            items: [],
-        }
     }
 
     componentDidMount()
     {
-        console.log("PostContainer mounted.");
-
-        axios.get(dataUrl).then((response) => {
-            this.setState({items: response.data});
-        });
+        this.props.loadFeed();
     }
 
     render() {
         return (
-            <div>
-                {this.state.items.map((item) => {
+            <FlipMove enterAnimation="fade">
+                {this.props.posts.map((item) => {
                     return <Post
                         key={item.id}
                         title={item.title}
@@ -36,14 +29,11 @@ export default class Feed extends Component {
                         content={item.content}
                         />;
                 })}
-            </div>
+            </FlipMove>
         );
     }
 }
 
 if (document.getElementById('posts')) {
     ReactDOM.render(<Feed/>, document.getElementById('posts'));
-}
-else {
-    console.log("No element with posts as id");
 }

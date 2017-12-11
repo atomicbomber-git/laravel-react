@@ -16,6 +16,24 @@ class UserController extends Controller
 
     public function feed()
     {
-        return PostResource::collection(Post::all());
+        return PostResource::collection(
+            Post::orderBy("created_at", "desc")
+                ->limit(5)
+                ->get()
+        );
+    }
+
+    public function createPost(User $user)
+    {
+        $data = request()->validate([
+            "title" => "required|string",
+            "content" => "required|string"
+        ]);
+
+        $user->posts()->create($data);
+
+        return response([
+            "status" => "success"
+        ]);
     }
 }
