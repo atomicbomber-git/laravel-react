@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @section("content")
-<section class="hero is-dark">
+    <section class="hero is-dark">
         <div class="hero-body">
             <div class="container">
                 <h1 class="title"> Social Media </h1>
@@ -11,7 +11,11 @@
     </section>
 
     <div class="container">
-        <div id="navigation"></div>    
+        <div id="navigation"></div>
+        <script>
+            window.csrfToken = "{{ csrf_token() }}";
+            window.logoutUrl = "{{ route('logout') }}";
+        </script>
     </div>
 
     <section class="section">
