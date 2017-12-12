@@ -15,3 +15,4 @@ require('./bootstrap');
 // require('./components/Feed.js');
 // require('./components/PostInput.js');
 require('./components/Timeline.js');
+require('./components/Navigation.js');

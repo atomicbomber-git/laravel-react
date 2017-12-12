@@ -10,6 +10,10 @@
         </div>
     </section>
 
+    <div class="container">
+        <div id="navigation"></div>    
+    </div>
+
     <section class="section">
         <div class="container">
             <div class="columns">
