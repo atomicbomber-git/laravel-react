@@ -10,12 +10,14 @@ export default class Timeline extends Component {
 
         this.state = {
             posts: [],
-            showMessage: false
+            showMessage: false,
+            messageText: ""
         };
 
         this.loadFeed = this.loadFeed.bind(this);
         this.onSubmitFinish = this.onSubmitFinish.bind(this);
         this.onSubmitSuccess = this.onSubmitSuccess.bind(this);
+        this.onSubmitFailure = this.onSubmitFailure.bind(this);
     }
     
     componentDidMount() {
@@ -23,8 +25,6 @@ export default class Timeline extends Component {
     }
 
     loadFeed() {
-        console.log("Loading feed...");
-
         axios.get(dataUrl).then((response) => {
             this.setState({posts: response.data});
         });
@@ -35,16 +35,30 @@ export default class Timeline extends Component {
     }
 
     onSubmitSuccess() {
-        this.setState({showMessage: true});
+        this.setState({
+            showMessage: true,
+            messageText: "Post has been successfully created!" 
+        });
 
         setTimeout(() => {
-            this.setState({showMessage: false});
-        }, 5000);
+            this.setState({showMessage: false, messageText: ""});
+        }, 3000);
+    }
+
+    onSubmitFailure() {
+        this.setState({
+            showMessage: true,
+            messageText: "Failed to create post." 
+        });
+
+        setTimeout(() => {
+            this.setState({showMessage: false, messageText: ""});
+        }, 3000);
     }
 
     render() {
         const notification = this.state.showMessage ?
-            <div key="1" className="notification is-success"> Your post has been successfully submitted! </div> :
+            <div key="1" className="notification is-success"> {this.state.messageText} </div> :
             <div key="0"> </div>;
 
         return (
@@ -54,6 +68,7 @@ export default class Timeline extends Component {
                     <PostInput
                         onSubmitFinish={this.onSubmitFinish}
                         onSubmitSuccess={this.onSubmitSuccess}
+                        onSubmitFailure={this.onSubmitFailure}
                         />
 
                     <div style={{ marginTop: "10px", marginBottom: "10px" }}>
