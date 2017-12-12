@@ -30,7 +30,7 @@ class UserController extends Controller
             "content" => "required|string"
         ]);
 
-        $user->posts()->create($data);
+        auth()->user()->posts()->create($data);
 
         return response([
             "status" => "success"
