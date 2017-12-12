@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom';
 import PostInput from './PostInput';
 import Feed from './Feed';
 import FlipMove from 'react-flip-move';
+import classNames from 'classnames';
+
+let Notification = (props) => {
+    let cssClasses = classNames("notification", props.status);
+    return (<div className={cssClasses}> {props.message} </div>);
+}
 
 export default class Timeline extends Component {
     constructor(props) {
@@ -11,7 +17,8 @@ export default class Timeline extends Component {
         this.state = {
             posts: [],
             showMessage: false,
-            messageText: ""
+            notificationText: "",
+            notificationStatus: ""
         };
 
         this.loadFeed = this.loadFeed.bind(this);
@@ -37,28 +44,30 @@ export default class Timeline extends Component {
     onSubmitSuccess() {
         this.setState({
             showMessage: true,
-            messageText: "Post has been successfully created!" 
+            notificationText: "Post has been successfully created!",
+            notificationStatus: "is-success"
         });
 
         setTimeout(() => {
-            this.setState({showMessage: false, messageText: ""});
+            this.setState({showMessage: false, notificationText: ""});
         }, 3000);
     }
 
     onSubmitFailure() {
         this.setState({
             showMessage: true,
-            messageText: "Failed to create post." 
+            notificationText: "Failed to create post.",
+            notificationStatus: "is-danger"
         });
 
         setTimeout(() => {
-            this.setState({showMessage: false, messageText: ""});
+            this.setState({showMessage: false, notificationText: ""});
         }, 3000);
     }
 
     render() {
         const notification = this.state.showMessage ?
-            <div key="1" className="notification is-success"> {this.state.messageText} </div> :
+            <div key="1"> <Notification message={this.state.notificationText} status={this.state.notificationStatus} /> </div> :
             <div key="0"> </div>;
 
         return (
