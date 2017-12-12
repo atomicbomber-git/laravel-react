@@ -25,6 +25,19 @@ export default class Timeline extends Component {
         this.onSubmitFinish = this.onSubmitFinish.bind(this);
         this.onSubmitSuccess = this.onSubmitSuccess.bind(this);
         this.onSubmitFailure = this.onSubmitFailure.bind(this);
+        this.createNotification = this.createNotification.bind(this);
+    }
+
+    createNotification(text, status, timeout = 3000) {
+        this.setState({
+            showMessage: true,
+            notificationText: text,
+            notificationStatus: status
+        });
+
+        setTimeout(() => {
+            this.setState({showMessage: false, notificationText: ""});
+        }, timeout);
     }
     
     componentDidMount() {
@@ -42,27 +55,11 @@ export default class Timeline extends Component {
     }
 
     onSubmitSuccess() {
-        this.setState({
-            showMessage: true,
-            notificationText: "Post has been successfully created!",
-            notificationStatus: "is-success"
-        });
-
-        setTimeout(() => {
-            this.setState({showMessage: false, notificationText: ""});
-        }, 3000);
+        this.createNotification("Successfully created post.", "is-success");
     }
 
     onSubmitFailure() {
-        this.setState({
-            showMessage: true,
-            notificationText: "Failed to create post.",
-            notificationStatus: "is-danger"
-        });
-
-        setTimeout(() => {
-            this.setState({showMessage: false, notificationText: ""});
-        }, 3000);
+        this.createNotification("Failed to create post.", "is-danger");
     }
 
     render() {
