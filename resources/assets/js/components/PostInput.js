@@ -7,19 +7,16 @@ export default class PostInput extends Component {
     {
         super(props);
 
-        this.defaultInput = {
-            title: "",
-            content: ""
-        };
-        
         this.state = {
             isSubmitting: false,
-            input: this.defaultInput
+            input: {title: "", content: ""},
+            error: {title: "", content: ""}
         };
     
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleContentChange = this.handleContentChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.resetFields = this.resetFields.bind(this);
     }
 
     handleTitleChange(event)
@@ -29,52 +26,76 @@ export default class PostInput extends Component {
 
     handleContentChange(event)
     {
-        this.setState({input: {...this.state.input, content: event.target.value} });        
+        this.setState({input: {...this.state.input, content: event.target.value} });
+    }
+
+    resetFields()
+    {
+        this.setState({
+            input: {title: "", content: ""},
+            error: {title: "", content: ""}
+        });
     }
 
     handleFormSubmit(event)
     {
         event.preventDefault()
+        this.setState({ isSubmitting: true });
 
-        this.setState({
-            isSubmitting: true,
-            input: this.defaultInput
-        });
-
-        let done = () => {
-            console.log("Done")
+        let ajaxDone = () => {
+            this.setState({ isSubmitting: false });
             this.props.onSubmitFinish();
-            this.setState({isSubmitting: false});
         }
 
         axios.post(window.postUrl, this.state.input)
             .then((response) => {
-                console.log(response.data);
                 this.props.onSubmitSuccess();
-                done();
+                this.resetFields();
+                ajaxDone();
             })
             .catch((error) => {
-                console.log(error.response.data);
-                done();
+                this.props.onSubmitFailure();
+                ajaxDone()
+                
+                if (!error.response) {
+                    /* Network error */
+                    return;
+                }
+
+                let {data} = error.response;
+                let newError = {};
+                for (const key in this.state.error) {
+                    data.errors.hasOwnProperty(key) ?
+                        newError[key] = data.errors[key][0] :
+                        newError[key] = ""
+                }
+
+                this.setState({ error: {...this.state.error, ...newError} });
             })
 
     }
 
     render() {
+
+        let {title, content} = this.state.input;
+        let {error} = this.state;
+
         return (
             <form onSubmit={this.handleFormSubmit}>
                 <div className="box">
                     <div className="field">
                         <label htmlFor="title"> Title: </label>
                         <div className="control">
-                            <input value={this.state.input.title} disabled={this.state.isSubmitting} onChange={this.handleTitleChange} id="title" type="text" className="input"/>
+                            <input value={title} disabled={this.state.isSubmitting} onChange={this.handleTitleChange} id="title" type="text" className={classNames("input", {"is-danger": error.title})}/>
+                            <span className="help is-danger"> {error.title} </span>
                         </div>
                     </div>
 
                     <div className="field">
                         <label htmlFor="content"> Content: </label>
                         <div className="control">
-                            <textarea value={this.state.input.content} disabled={this.state.isSubmitting} onChange={this.handleContentChange} name="content" id="content" className="textarea"></textarea>
+                            <textarea value={content} disabled={this.state.isSubmitting} onChange={this.handleContentChange} name="content" id="content" className={classNames("textarea", {"is-danger": error.content})}></textarea>
+                            <span className="help is-danger"> {error.content} </span>
                         </div>
                     </div>
 
