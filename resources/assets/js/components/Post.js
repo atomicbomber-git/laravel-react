@@ -8,14 +8,28 @@ export default class Post extends Component {
 
     render() {
         return (
-            <div className="box">
-               <h3 className="title is-4"> {this.props.title} </h3>
-               <p>
-                   <small>
-                       Posted at <strong> {this.props.time} </strong> by <strong> {this.props.poster} </strong>
-                   </small>
-               </p>
-               <p> {this.props.content} </p>
+            <div className="card" style={{marginBottom: "20px"}}>
+                <header className="card-header">
+                    <p className="card-header-title">
+                        {this.props.title}
+                    </p>
+
+                    <div className="card-header-icon">
+                        <span className="icon">
+                            <i className="fa fa-angle-down"></i>
+                        </span>
+                    </div>
+                </header>
+                <div className="card-content">
+                    <div className="content">
+                        <p>
+                            <small>
+                                Posted at <strong> {this.props.time} </strong> by <strong> {this.props.poster} </strong>
+                            </small>
+                        </p>
+                        <p> {this.props.content} </p>
+                    </div>
+                </div>
             </div>
         );
     }
