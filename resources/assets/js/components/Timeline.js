@@ -89,6 +89,7 @@ export default class Timeline extends Component {
                     <Feed
                         loadFeed={this.loadFeed}
                         posts={this.state.posts}
+                        currentUserId={window.currentUserId}
                         />
             </div>
         );

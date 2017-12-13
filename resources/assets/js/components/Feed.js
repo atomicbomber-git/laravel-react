@@ -25,6 +25,8 @@ export default class Feed extends Component {
                         key={item.id}
                         title={item.title}
                         poster={item.poster}
+                        posterId={item.poster_id}
+                        currentUserId={this.props.currentUserId}
                         time={item.time}
                         content={item.content}
                         />;

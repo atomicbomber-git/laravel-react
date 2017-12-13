@@ -23,6 +23,12 @@
             <div class="columns">
                 <div class="column is-three-fifths">
                     <div id="timeline"></div>
+                    {{--  Data for the timeline component  --}}
+                    <script>
+                        window.dataUrl = "{{ route('user.feed', $user) }}";
+                        window.postUrl = "{{ route('user.post.create', $user) }}";
+                        window.currentUserId = "{{ auth()->user()->id }}";
+                    </script>
                 </div>
                 <div class="column">
                     <p>
@@ -32,9 +38,4 @@
             </div>
         </div>
     </section>
-
-    <script>
-        window.dataUrl = "{{ route('user.feed', $user) }}";
-        window.postUrl = "{{ route('user.post.create', $user) }}";
-    </script>
 @endsection
